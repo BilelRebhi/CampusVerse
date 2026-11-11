@@ -42,7 +42,7 @@ README.md
 
 ## How to contribute
 
-1. Clone: `git clone <repo-url>` and open the `CampusVerse` folder in IntelliJ.
+1. Clone: `git clone https://github.com/Isra-zguir/CampusVerse.git` and open the `CampusVerse` folder in IntelliJ.
 2. Work only inside **your** microservice folder to avoid conflicts.
 3. Before starting: `git pull`
 4. When done: `git add .` → `git commit -m "MS4: short description"` → `git pull --rebase` → `git push`
