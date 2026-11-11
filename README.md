@@ -12,7 +12,7 @@ equipment borrowing, maintenance requests, and lost-and-found.
 | MS1 | Campus Spaces     | `Backend/campus-spaces-service`      | Spring Boot                  | PostgreSQL | TBD   |
 | MS2 | Reservations      | `Backend/reservation-service`        | Spring Boot                  | PostgreSQL | TBD   |
 | MS3 | Student Clubs     | `Backend/student-clubs-service`      | Spring Boot                  | PostgreSQL | TBD   |
-| MS4 | Events            | `Backend/event-service`              | Spring Boot                  | PostgreSQL | isra  |
+| MS4 | [Events](Documentation/MS4-Event-Service.md) | `Backend/event-service` | Spring Boot                  | PostgreSQL | isra  |
 | MS5 | Equipment Lending | `Backend/equipment-lending-service`  | Spring Boot                  | PostgreSQL | TBD   |
 | MS6 | Lost & Found      | `Backend/lost-found-service`         | Spring Boot                  | PostgreSQL | TBD   |
 | MS7 | AI Brain (shared) | `Backend/ai-service`                 | Python + FastAPI             | PostgreSQL | Team  |
