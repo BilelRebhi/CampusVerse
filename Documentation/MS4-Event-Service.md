@@ -192,10 +192,11 @@ flowchart LR
 
 ## 9. How to run
 
-1. Create the database: run `Backend/event-service/database/init.sql` in pgAdmin (`CREATE DATABASE events_db;`)
+1. Create the database and its dedicated user: run `Backend/event-service/database/init.sql` in pgAdmin
+   (creates user `events_user` and database `events_db` owned by it)
 2. Open `Backend/event-service` in IntelliJ
-3. Run configuration → Environment variables: `DB_PASSWORD=<your postgres password>`
-4. Run `EventServiceApplication`, then open http://localhost:8084/api/events/health
+3. Run `EventServiceApplication`, then open http://localhost:8084/api/events/health
+   (no configuration needed; `DB_USERNAME` / `DB_PASSWORD` environment variables can override the defaults)
 
 ```json
 { "service": "event-service", "microservice": "MS4 - Events", "status": "UP" }
