@@ -38,7 +38,7 @@ public class EventRegistration {
     @Builder.Default
     private RegistrationStatus status = RegistrationStatus.CONFIRMED;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private LocalDateTime registeredAt;
 
     @PrePersist

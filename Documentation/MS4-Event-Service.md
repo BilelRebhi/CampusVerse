@@ -87,7 +87,7 @@ organizerId, clubId, spaceId, reservationId, createdAt, updatedAt
 - Other services get event data **only through the REST API**.
 - Each service can therefore change its schema, be deployed or be restarted without breaking the others.
 
-## 6. REST API (planned)
+## 6. REST API (implemented and tested)
 
 Base URL: `http://localhost:8084/api/events`
 
@@ -102,7 +102,7 @@ Base URL: `http://localhost:8084/api/events`
 | DELETE | `/api/events/{id}` | Delete a DRAFT event | 204 | 403, 404, 409 |
 | PATCH | `/api/events/{id}/publish` | Request a room and publish | 200 | 404, 409, 503 |
 | PATCH | `/api/events/{id}/cancel` | Cancel an event | 200 | 403, 404, 409 |
-| GET | `/api/events/health` | Service health check (**implemented**) | 200 | |
+| GET | `/api/events/health` | Service health check | 200 | |
 
 ### Registrations
 
@@ -190,7 +190,31 @@ flowchart LR
 | **Repeated failures** | Circuit breaker (Resilience4j) with a fallback, so a failing service is not called again and again |
 | **Room reserved but event save failed** | Compensation: call `DELETE /api/reservations/{id}` to release the room |
 
-## 9. How to run
+### Integration switch
+The other microservices are not built yet, so calls to them are **switched off by default**
+(`campusverse.integration.enabled=false` in `application.properties`). The Event service then works on its own:
+the room capacity check is skipped, club checks always pass, and publishing does not reserve a room.
+Set `INTEGRATION_ENABLED=true` (and the `CAMPUS_SPACES_URL`, `RESERVATIONS_URL`, `STUDENT_CLUBS_URL` environment variables)
+once those services are running. With the switch on and the services down, the failure behaviour above was tested:
+club event creation → 503, room check skipped → 201, publish → 503 and the event stays `PENDING_ROOM`.
+
+## 9. Code structure (`Backend/event-service`)
+
+```
+com.campusverse.event
+├── controller/   EventController, RegistrationController, HealthController   (REST endpoints)
+├── service/      EventService(+Impl), RegistrationService(+Impl)            (business rules R1–R10)
+├── repository/   EventRepository, EventRegistrationRepository               (Spring Data JPA)
+├── entity/       Event, EventRegistration                                   (database tables)
+├── enums/        EventCategory, EventStatus, RegistrationStatus
+├── dto/          EventRequest/Response, RegistrationRequest/Response, ErrorResponse
+├── mapper/       EventMapper                                                (entity <-> DTO)
+├── exception/    custom exceptions + GlobalExceptionHandler                 (400/403/404/409/503)
+├── client/       CampusSpacesClient, ReservationsClient, StudentClubsClient (calls to other services)
+└── config/       RestClientConfig                                           (HTTP clients with 3 s timeout)
+```
+
+## 10. How to run
 
 1. Create the database and its dedicated user: run `Backend/event-service/database/init.sql` in pgAdmin
    (creates user `events_user` and database `events_db` owned by it)
