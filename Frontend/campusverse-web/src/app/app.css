@@ -1,0 +1,34 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 1.5rem;
+  height: 60px;
+  background: var(--primary);
+  color: #fff;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+}
+
+nav a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+}
+
+nav a.active,
+nav a:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}

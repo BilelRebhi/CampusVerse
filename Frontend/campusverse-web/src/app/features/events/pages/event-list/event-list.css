@@ -1,0 +1,44 @@
+.filters {
+  margin-bottom: 1.25rem;
+  align-items: flex-end;
+}
+
+.filters > div {
+  min-width: 180px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.event-card {
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.event-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 14px rgba(47, 79, 168, 0.12);
+}
+
+.event-card h2 {
+  margin: 0.75rem 0 0.25rem;
+}
+
+.event-card p {
+  margin: 0.25rem 0;
+}
+
+.seats {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.empty {
+  text-align: center;
+  padding: 2rem;
+}

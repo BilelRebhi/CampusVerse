@@ -1,0 +1,93 @@
+<a routerLink="/events" class="back">← All events</a>
+
+@if (error()) {
+  <div class="alert error">{{ error() }}</div>
+}
+@if (message()) {
+  <div class="alert success">{{ message() }}</div>
+}
+
+@if (event(); as e) {
+  <div class="card">
+    <div class="row">
+      <span class="badge">{{ e.category }}</span>
+      <span class="badge" [class]="e.status">{{ e.status }}</span>
+      <span class="spacer"></span>
+      @if (!isClosed()) {
+        <a class="btn outline small" [routerLink]="['/events', e.id, 'edit']">Edit</a>
+      }
+      @if (canPublish()) {
+        <button class="btn small" (click)="publish()" [disabled]="busy()">Publish</button>
+      }
+      @if (e.status === 'DRAFT') {
+        <button class="btn danger small" (click)="deleteEvent()" [disabled]="busy()">Delete</button>
+      } @else if (!isClosed()) {
+        <button class="btn danger small" (click)="cancelEvent()" [disabled]="busy()">Cancel event</button>
+      }
+    </div>
+
+    <h1>{{ e.title }}</h1>
+    @if (e.description) {
+      <p>{{ e.description }}</p>
+    }
+
+    <dl class="facts">
+      <div><dt>Starts</dt><dd>{{ e.startDateTime | date: 'EEE d MMM y, HH:mm' }}</dd></div>
+      <div><dt>Ends</dt><dd>{{ e.endDateTime | date: 'EEE d MMM y, HH:mm' }}</dd></div>
+      <div><dt>Registration deadline</dt><dd>{{ e.registrationDeadline ? (e.registrationDeadline | date: 'd MMM y, HH:mm') : 'Event start' }}</dd></div>
+      <div><dt>Seats</dt><dd><strong>{{ e.confirmedCount }}</strong> / {{ e.maxCapacity }} ({{ e.availableSeats }} left)</dd></div>
+      <div><dt>Organizer ID</dt><dd>{{ e.organizerId }}</dd></div>
+      <div><dt>Club ID</dt><dd>{{ e.clubId ?? '—' }}</dd></div>
+      <div><dt>Room (space ID)</dt><dd>{{ e.spaceId ?? '—' }}</dd></div>
+      <div><dt>Reservation ID</dt><dd>{{ e.reservationId ?? '—' }}</dd></div>
+    </dl>
+
+    @if (e.status === 'PENDING_ROOM') {
+      <p class="alert error">The room could not be reserved yet (Reservations service unavailable). Try publishing again later.</p>
+    }
+  </div>
+
+  <h2>Registrations ({{ activeRegistrations().length }})</h2>
+
+  @if (e.status === 'PUBLISHED') {
+    <form class="card row register" (ngSubmit)="register()">
+      <div class="grow">
+        <label for="studentId">Register a student</label>
+        <input id="studentId" name="studentId" type="number" min="1" placeholder="Student ID"
+               [(ngModel)]="studentId" />
+      </div>
+      <button class="btn" type="submit" [disabled]="busy()">Register</button>
+    </form>
+  } @else {
+    <p class="muted">Registrations open once the event is published.</p>
+  }
+
+  @if (registrations().length > 0) {
+    <div class="card table-card">
+      <table>
+        <thead>
+          <tr><th>Student ID</th><th>Status</th><th>Registered at</th><th></th></tr>
+        </thead>
+        <tbody>
+          @for (r of registrations(); track r.id) {
+            <tr>
+              <td>{{ r.studentId }}</td>
+              <td><span class="badge" [class]="r.status">{{ r.status }}</span></td>
+              <td>{{ r.registeredAt | date: 'd MMM y, HH:mm' }}</td>
+              <td class="actions">
+                @if (r.status === 'CONFIRMED') {
+                  <button class="btn outline small" (click)="markAttendance(r)" [disabled]="busy()">Attended</button>
+                }
+                @if (r.status === 'CONFIRMED' || r.status === 'WAITLISTED') {
+                  <button class="btn danger small" (click)="cancelRegistration(r)" [disabled]="busy()">Cancel</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+} @else if (!error()) {
+  <p class="muted">Loading…</p>
+}

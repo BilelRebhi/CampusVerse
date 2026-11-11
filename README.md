@@ -23,7 +23,7 @@ Each microservice owns its own PostgreSQL database (database-per-service).
 
 ```
 Backend/                    one project per microservice
-Frontend/                   web client
+Frontend/campusverse-web/   ONE Angular website; each microservice has its pages in src/app/features/<name>/
 Documentation/Presentation/ validation slides
 Documentation/Diagrams/     architecture, ER / UML class diagrams
 README.md
@@ -43,6 +43,9 @@ README.md
 ## How to contribute
 
 1. Clone: `git clone https://github.com/Isra-zguir/CampusVerse.git` and open the `CampusVerse` folder in IntelliJ.
-2. Work only inside **your** microservice folder to avoid conflicts.
+2. Work only inside **your** folders to avoid conflicts:
+   - backend: `Backend/<your-service>/`
+   - frontend: `Frontend/campusverse-web/src/app/features/<your-feature>/`
+     (see [Frontend/campusverse-web/README.md](Frontend/campusverse-web/README.md) to add your pages)
 3. Before starting: `git pull`
 4. When done: `git add .` → `git commit -m "MS4: short description"` → `git pull --rebase` → `git push`

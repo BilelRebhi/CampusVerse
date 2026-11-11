@@ -1,0 +1,75 @@
+<a [routerLink]="isEdit ? ['/events', id()] : ['/events']" style="color: var(--primary); text-decoration: none;">← Back</a>
+
+<h1 style="margin-top: 1rem;">{{ isEdit ? 'Edit event' : 'New event' }}</h1>
+
+@if (error()) {
+  <div class="alert error">{{ error() }}</div>
+}
+
+<form class="card" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="form-grid">
+    <div class="full">
+      <label for="title">Title *</label>
+      <input id="title" formControlName="title" placeholder="e.g. Spring Boot Workshop" />
+      @if (invalid('title')) { <div class="field-error">Title is required (max 150 characters)</div> }
+    </div>
+
+    <div class="full">
+      <label for="description">Description</label>
+      <textarea id="description" rows="3" formControlName="description"></textarea>
+    </div>
+
+    <div>
+      <label for="category">Category *</label>
+      <select id="category" formControlName="category">
+        @for (c of categories; track c) {
+          <option [value]="c">{{ c }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label for="maxCapacity">Max capacity *</label>
+      <input id="maxCapacity" type="number" min="1" formControlName="maxCapacity" />
+      @if (invalid('maxCapacity')) { <div class="field-error">Must be at least 1</div> }
+    </div>
+
+    <div>
+      <label for="startDateTime">Start *</label>
+      <input id="startDateTime" type="datetime-local" formControlName="startDateTime" />
+      @if (invalid('startDateTime')) { <div class="field-error">Start date is required</div> }
+    </div>
+
+    <div>
+      <label for="endDateTime">End *</label>
+      <input id="endDateTime" type="datetime-local" formControlName="endDateTime" />
+      @if (invalid('endDateTime')) { <div class="field-error">End date is required</div> }
+    </div>
+
+    <div>
+      <label for="registrationDeadline">Registration deadline</label>
+      <input id="registrationDeadline" type="datetime-local" formControlName="registrationDeadline" />
+    </div>
+
+    <div>
+      <label for="organizerId">Organizer ID *</label>
+      <input id="organizerId" type="number" min="1" formControlName="organizerId" />
+    </div>
+
+    <div>
+      <label for="clubId">Club ID <span class="muted">(Student Clubs service)</span></label>
+      <input id="clubId" type="number" min="1" formControlName="clubId" placeholder="optional" />
+    </div>
+
+    <div>
+      <label for="spaceId">Room / space ID <span class="muted">(Campus Spaces service)</span></label>
+      <input id="spaceId" type="number" min="1" formControlName="spaceId" placeholder="optional" />
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 1.25rem;">
+    <span class="spacer"></span>
+    <a class="btn outline" [routerLink]="isEdit ? ['/events', id()] : ['/events']">Cancel</a>
+    <button class="btn" type="submit" [disabled]="saving()">{{ isEdit ? 'Save changes' : 'Create event' }}</button>
+  </div>
+</form>
