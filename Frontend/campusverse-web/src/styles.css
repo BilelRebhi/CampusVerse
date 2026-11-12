@@ -94,10 +94,10 @@ label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25
   background: #e9edf5;
   color: var(--muted);
 }
-.badge.PUBLISHED, .badge.CONFIRMED, .badge.ATTENDED { background: #e7f6ee; color: var(--success); }
-.badge.DRAFT { background: #e9edf5; color: var(--muted); }
-.badge.PENDING_ROOM, .badge.WAITLISTED { background: #fff4e0; color: var(--warning); }
-.badge.CANCELLED { background: #fdecea; color: var(--danger); }
+.badge.PUBLISHED, .badge.CONFIRMED, .badge.ATTENDED, .badge.APPROVED { background: #e7f6ee; color: var(--success); }
+.badge.DRAFT, .badge.PENDING { background: #e9edf5; color: var(--muted); }
+.badge.PENDING_ROOM, .badge.WAITLISTED, .badge.IN_REVIEW { background: #fff4e0; color: var(--warning); }
+.badge.CANCELLED, .badge.REJECTED { background: #fdecea; color: var(--danger); }
 .badge.COMPLETED { background: #e6ecfa; color: var(--primary); }
 
 table { width: 100%; border-collapse: collapse; }

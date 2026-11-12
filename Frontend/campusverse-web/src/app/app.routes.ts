@@ -11,5 +11,8 @@ export const routes: Routes = [
   // MS4 - Events (isra)
   { path: 'events', loadChildren: () => import('./features/events/events.routes').then(m => m.EVENTS_ROUTES) },
 
+  // Municipal Services (Bilel)
+  { path: 'municipal', loadChildren: () => import('./features/municipal/municipal.routes').then(m => m.MUNICIPAL_ROUTES) },
+
   { path: '**', redirectTo: '' }
 ];
