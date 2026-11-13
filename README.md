@@ -1,51 +1,83 @@
-# CampusVerse — Smart University Ecosystem
+# Smart City — Web Platform for Urban Management and Municipal Services
 
-An all-in-one platform for university life: room booking, student clubs, campus events,
-equipment borrowing, maintenance requests, and lost-and-found.
+AWD mini-project (Distributed Web Architecture) — ESPRIT, academic year 2026/2027.
 
-**Special feature:** smart room allocation based on availability, capacity, and scheduling conflicts.
+Smart City gives residents one website to report street problems, follow municipal requests,
+book public facilities, check traffic and environmental conditions, take part in local
+consultations and recover lost items. Municipal staff use it to review reports, assign repairs
+and follow every request until a decision is made.
+
+The platform is built as **microservices**: each service owns its business capability and its
+own PostgreSQL database (database-per-service).
+
+## Actors
+
+| Actor | Main role |
+|---|---|
+| Citizen | Manages a profile, reports incidents, books parking and facilities, follows requests, votes and comments |
+| Municipal administrator | Configures services and rules, assigns resources, reviews dashboards |
+| Municipal agent | Validates reports and administrative requests, sets priorities, verifies repairs |
+| Technician | Carries out field repairs and updates intervention progress |
+| Mobility operator | Manages road closures and parking availability |
+| Environmental operator | Configures stations and thresholds, reviews readings and alerts |
+| Facility manager / organizer | Manages facilities, availability, bookings and community activities |
+| Lost-and-found agent | Verifies ownership claims and coordinates returns |
+| System administrator | Manages infrastructure, accounts and roles |
 
 ## Microservices
 
-| #   | Microservice      | Folder                               | Tech                         | Database   | Owner |
-|-----|-------------------|--------------------------------------|------------------------------|------------|-------|
-| MS1 | Campus Spaces     | `Backend/campus-spaces-service`      | Spring Boot                  | PostgreSQL | TBD   |
-| MS2 | Reservations      | `Backend/reservation-service`        | Spring Boot                  | PostgreSQL | TBD   |
-| MS3 | Student Clubs     | `Backend/student-clubs-service`      | Spring Boot                  | PostgreSQL | TBD   |
-| MS4 | [Events](Documentation/MS4-Event-Service.md) | `Backend/event-service` | Spring Boot                  | PostgreSQL | isra  |
-| MS5 | Equipment Lending | `Backend/equipment-lending-service`  | Spring Boot                  | PostgreSQL | TBD   |
-| MS6 | Lost & Found      | `Backend/lost-found-service`         | Spring Boot                  | PostgreSQL | TBD   |
-| MS7 | AI Brain (shared) | `Backend/ai-service`                 | Python + FastAPI             | PostgreSQL | Team  |
+| # | Microservice | Folder | Tech | Database | Owner |
+|---|---|---|---|---|---|
+| MS1 | Citizen & Civic Participation | `Backend/citizen-participation-service` | Spring Boot | PostgreSQL | TBD |
+| MS2 | Urban Incident & Maintenance | `Backend/urban-incident-service` | Spring Boot | PostgreSQL | Sarra Guesmi |
+| MS3 | Smart Mobility & Traffic | `Backend/smart-mobility-service` | Spring Boot | PostgreSQL | TBD |
+| MS4 | [EcoCity & Environmental Monitoring](Documentation/MS4-EcoCity-Service.md) | `Backend/ecocity-service` | Spring Boot | PostgreSQL + PostGIS | Isra Zguir |
+| MS5 | Digital Municipal Services | `Backend/new-backend` | Spring Boot | PostgreSQL | Bilel Rebhi |
+| MS6 | Smart Places & Public Facilities | `Backend/smart-places-service` | Spring Boot | PostgreSQL | TBD |
+| MS7 | ReLink AI — Intelligent Lost & Found | `Backend/ai-service` | Python + FastAPI | PostgreSQL | Team |
 
-Each microservice owns its own PostgreSQL database (database-per-service).
+Some services are still on their own branch and will appear in `main` after their pull request is merged.
+
+## Architecture
+
+- **Frontend:** one Angular web application (`Frontend/campusverse-web`).
+- **API Gateway:** single entry point for the frontend, routing to the backend services.
+- **Eureka Discovery Server:** service registration and discovery.
+- **Config Server:** centralized configuration.
+- **Keycloak:** authentication and role-based access (JWT).
+- **Synchronous communication:** REST / OpenFeign.
+- **Asynchronous communication:** RabbitMQ events.
+- **Databases:** one PostgreSQL database per microservice; no service reads another service's tables.
+- **Docker:** containerization of all components.
 
 ## Repository structure
 
 ```
 Backend/                    one project per microservice
-Frontend/campusverse-web/   ONE Angular website; each microservice has its pages in src/app/features/<name>/
+Frontend/campusverse-web/   Angular website; each microservice has its pages in src/app/features/<name>/
 Documentation/Presentation/ validation slides
-Documentation/Diagrams/     architecture, ER / UML class diagrams
+Documentation/Diagrams/     global architecture, use case and class diagrams
 README.md
 ```
 
 ## Team
 
 | Member | Microservice |
-|--------|--------------|
-| isra   | MS4 — Events |
-|        |              |
-|        |              |
-|        |              |
-|        |              |
-|        |              |
+|---|---|
+| Isra Zguir | MS4 — EcoCity & Environmental Monitoring |
+| Sarra Guesmi | MS2 — Urban Incident & Maintenance |
+| Bilel Rebhi | MS5 — Digital Municipal Services |
+| Nour Ammar | TBD |
+| Eya Hwess | TBD |
+| Eya Abdellaoui | TBD |
 
 ## How to contribute
 
-1. Clone: `git clone https://github.com/Isra-zguir/CampusVerse.git` and open the `CampusVerse` folder in IntelliJ.
-2. Work only inside **your** folders to avoid conflicts:
+1. Clone: `git clone https://github.com/Isra-zguir/CampusVerse.git`
+2. Create your own branch: `git checkout -b feature/<your-service>`
+3. Work only inside **your** folders:
    - backend: `Backend/<your-service>/`
    - frontend: `Frontend/campusverse-web/src/app/features/<your-feature>/`
-     (see [Frontend/campusverse-web/README.md](Frontend/campusverse-web/README.md) to add your pages)
-3. Before starting: `git pull`
-4. When done: `git add .` → `git commit -m "MS4: short description"` → `git pull --rebase` → `git push`
+   - documentation: `Documentation/` (your service file and diagrams)
+4. Before pushing: `git pull origin main`
+5. Push your branch and open a **Pull Request** to `main`.
