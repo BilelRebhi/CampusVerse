@@ -14,6 +14,10 @@ import { RouterLink } from '@angular/router';
         <h2>Events</h2>
         <p class="muted">Browse campus events, register, and manage your own events.</p>
       </a>
+      <a class="card tile" routerLink="/municipal">
+        <h2>Municipal Services</h2>
+        <p class="muted">Browse service catalogue, submit online applications, and track processing status.</p>
+      </a>
     </div>
   `,
   styles: `

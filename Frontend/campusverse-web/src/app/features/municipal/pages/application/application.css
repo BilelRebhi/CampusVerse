@@ -1,0 +1,29 @@
+.form-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.selected-service-info {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.85rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}
+
+.success-box {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.tracking-code {
+  font-family: monospace;
+  font-size: 1.1rem;
+  background: #f0f3fa;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: inline-block;
+  margin: 1rem 0;
+  border: 1px dashed var(--primary);
+  user-select: all;
+}
